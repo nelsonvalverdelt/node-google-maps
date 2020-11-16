@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de usuarios STI - Tracking</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCA6TZVaunw-u7QnCvV8eLQMjTcGlFdQFI&callback=initMap&libraries=&v=weekly"
+            defer
+    ></script>
+    <style type="text/css">
+        /* Always set the map height explicitly to define the size of the div
+         * element that contains the map. */
+        #map {
+            height: 100%;
+        }
+
+        /* Optional: Makes the sample page fill the window. */
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #floating-panel {
+            position: absolute;
+            top: 10px;
+            left: 25%;
+            z-index: 5;
+            background-color: #fff;
+            padding: 5px;
+            border: 1px solid #999;
+            text-align: center;
+            font-family: "Roboto", "sans-serif";
+            line-height: 30px;
+            padding-left: 10px;
+        }
+
+        #floating-panel {
+            margin-left: -52px;
+        }
+    </style>
+    <script>
+        //url de iconos : https://www.flaticon.es/packs/occupation-34?word=usuarios
+        const listTracking = [
+            {
+                position: { lat: 52.511, lng: 13.447 },
+                icon: '/assets/icons/estudiante.png',
+                title: "Nelson"
+            },
+            {
+                position: { lat: 52.516, lng: 13.442 },
+                icon: '/assets/icons/profesor.png',
+                title: "Bertìn"
+            },
+            {
+                position: { lat: 52.523, lng: 13.436 },
+                icon: '/assets/icons/trabajador.png',
+                title: "Aldo"
+            },
+            {
+                position: { lat: 52.526, lng: 13.442 },
+                icon: '/assets/icons/astronauta.png',
+                title: "Ocas"
+            }
+
+        ];
+        let markers = [];
+        let map;
+
+        //callback de la url del endpoint del api
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 15,
+                center: { lat: 52.519, lng: 13.442},
+            });
+        }
+
+        function addMarkerWithTimeout(maker, timeout) {
+
+            // window.setTimeout(() => {
+                maker.animation = google.maps.Animation.DROP;
+                maker.map = map;
+                markers.push(
+                    new google.maps.Marker(maker)
+                );
+            // }, timeout);
+        }
+
+        function clearMarkers() {
+            for (let i = 0; i < markers.length; i++) {
+                markers[i].setMap(null);
+            }
+            markers = [];
+        }
+
+        function init() {
+            clearMarkers();
+
+            // for (let i = 0; i < listTracking.length; i++) {
+            //     addMarkerWithTimeout(listTracking[i], i * 200);
+            // }
+            for (let i = 0; i < listTracking.length; i++) {
+                addMarkerWithTimeout(listTracking[i]);
+            }
+        }
+    </script>
+</head>
+<body>
+<div id="floating-panel">
+    <button id="drop" onclick="init()">Obtener datos de Tracking</button>
+</div>
+<div id="map"></div>
+</body>
+</html>
